@@ -1,5 +1,6 @@
 package br.com.curso.cursoSpring.entities;
 
+import br.com.curso.cursoSpring.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javassist.SerialVersionUID;
 
@@ -14,6 +15,8 @@ public class Order implements Serializable {
 
     public static final long SerialVersionUID = 1L;
 
+    private Integer orderStatus;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,14 +28,27 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id")
     private User client;
 
+
+
     public Order() {
 
     }
 
-    public Order(Long id, Instant instant, User client) {
+    public Order(Long id, OrderStatus orderStatus, Instant instant, User client) {
         this.id = id;
+        setOrderStatus(orderStatus);
         this.instant = instant;
         this.client = client;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if(orderStatus != null) {
+            this.orderStatus = orderStatus.getCode();
+        }
     }
 
     public Long getId() {
